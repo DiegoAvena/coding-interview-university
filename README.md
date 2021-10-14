@@ -616,6 +616,14 @@ if you can identify the runtime complexity of different algorithms. It's a super
         - [X] resize(new_capacity) // private function
             - when you reach capacity, resize to double the size
             - when popping an item, if size is 1/4 of capacity, resize to half
+
+                -Doubling and halving the size with these conditions allows us to have an amortized time of O(1) for insertion and deletion! 
+
+                Awesome idea: 
+                    You can get rid of amortized time and always insure O(1) by maintaining a copy of the array, but make it larger, and when the 
+                    capacity is reached, simply switch over to this new array
+                        -Can be tricky to implement something like this, plus it takes O(n + m) memory to store both arrays, but may be important for a real time system
+
     - [X] Time
         - O(1) to add/remove at end (amortized for allocations for more space), index, or update
         - O(n) to insert/remove elsewhere
@@ -684,21 +692,114 @@ if you can identify the runtime complexity of different algorithms. It's a super
         - empty: O(1) (linked list and array)
 
 - ### Hash table
-    - [ ] Videos:
-        - [ ] [Hashing with Chaining (video)](https://www.youtube.com/watch?v=0M_kIqhwbFo&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb&index=8)
-        - [ ] [Table Doubling, Karp-Rabin (video)](https://www.youtube.com/watch?v=BRO7mVIFt08&index=9&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb)
-        - [ ] [Open Addressing, Cryptographic Hashing (video)](https://www.youtube.com/watch?v=rvdJDijO2Ro&index=10&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb)
-        - [ ] [PyCon 2010: The Mighty Dictionary (video)](https://www.youtube.com/watch?v=C4Kc8xzcA68)
-        - [ ] [PyCon 2017: The Dictionary Even Mightier (video)](https://www.youtube.com/watch?v=66P5FMkWoVU)
-        - [ ] [(Advanced) Randomization: Universal & Perfect Hashing (video)](https://www.youtube.com/watch?v=z0lJ2k0sl1g&list=PLUl4u3cNGP6317WaSNfmCvGym2ucw3oGp&index=11)
-        - [ ] [(Advanced) Perfect hashing (video)](https://www.youtube.com/watch?v=N0COwN14gt0&list=PL2B4EEwhKD-NbwZ4ezj7gyc_3yNrojKM9&index=4)
+    - [X] Videos:
+        - [X] [Hashing with Chaining (video)](https://www.youtube.com/watch?v=0M_kIqhwbFo&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb&index=8)
+        - [X] [Table Doubling, Karp-Rabin (video)](https://www.youtube.com/watch?v=BRO7mVIFt08&index=9&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb)
+            -Table doubling allows us to have an amortized insertion time of O(1): the worst case only occurs log(n) times, the best case occurs way more overall: all the operations together are still cheap
+                -If we merely increased by 1, insertions would be O(nm + m') time, or linear: this is bad
 
-    - [ ] Online Courses:
-        - [ ] [Core Hash Tables (video)](https://www.coursera.org/lecture/data-structures-optimizing-performance/core-hash-tables-m7UuP)
-        - [ ] [Data Structures (video)](https://www.coursera.org/learn/data-structures/home/week/4)
-        - [ ] [Phone Book Problem (video)](https://www.coursera.org/lecture/data-structures/phone-book-problem-NYZZP)
-        - [ ] distributed hash tables:
+            -Karp-rabin
+                -An algorithm that makes use of hashing to allow us to search for strings in a larger database of string in linear runtime. It uses hash values of the string to look for, and the current string being 
+                looked at in the larger database, and compares these instead in order to allow for constant time comparison, since comparing 2 strings directly is a O(n) operation, but in order to construct the current string, 
+                we need a special data structure that computes a new hash each time we pop from the start of the current string and append from the larger string database a new char, otherwise constructing the current string
+                without appending and popping is linear, which we need to avoid or else string search is slow. 
+
+                -So for this algo, we need an abstract data type, a rolling hash ADT, with the functions append (computes the hash of a string when a char is added to the end of it) and 
+                pop (computes the has of a string when a char is removed from the front of it). If the hash values of 2 strings are the same, we must still actually check the strings, because 
+                2 different strings may still map to the same hash value (can have collisions), but by checking the hashes first, we cut down the occurance of this operation greatly, which gives
+                the string comparison part an amortized time of O(1), so it allows the algorithm to find a string in linear time
+
+        - [X] [Open Addressing, Cryptographic Hashing (video)](https://www.youtube.com/watch?v=rvdJDijO2Ro&index=10&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb)
+        - [X] [PyCon 2010: The Mighty Dictionary (video)](https://www.youtube.com/watch?v=C4Kc8xzcA68)
+        - [X] [PyCon 2017: The Dictionary Even Mightier (video)](https://www.youtube.com/watch?v=66P5FMkWoVU)
+        - [X] [(Advanced) Randomization: Universal & Perfect Hashing (video)](https://www.youtube.com/watch?v=z0lJ2k0sl1g&list=PLUl4u3cNGP6317WaSNfmCvGym2ucw3oGp&index=11)
+        - [X] [(Advanced) Perfect hashing (video)](https://www.youtube.com/watch?v=N0COwN14gt0&list=PL2B4EEwhKD-NbwZ4ezj7gyc_3yNrojKM9&index=4)
+
+    - [X] Online Courses:
+        - [X] [Core Hash Tables (video)](https://www.coursera.org/lecture/data-structures-optimizing-performance/core-hash-tables-m7UuP)
+        - [X] [Data Structures (video)](https://www.coursera.org/learn/data-structures/home/week/4)
+        - [X] [Phone Book Problem (video)](https://www.coursera.org/lecture/data-structures/phone-book-problem-NYZZP)
+        - [X] distributed hash tables (powerful tool for file uploading, used in things like dropbox, google drive):
             - [Instant Uploads And Storage Optimization In Dropbox (video)](https://www.coursera.org/lecture/data-structures/instant-uploads-and-storage-optimization-in-dropbox-DvaIb)
+                -Store only 1 copy of files that are the same for all users, just link that user account to that 1 copy of the file (so like if user A stores a video of cats, and user B stores that same video, rather 
+                than storing 2 copies of the vid, just keep 1 copy and link both accounts to that copy)
+                    -To check if that file is already stored on the service though, we must perform a type of search. 
+                    -Naive way
+                        -Compare every file on the storage system bit by bit to the current file being uploaded, but then we need to get the file uploaded first (so we will never see that instant upload of a large file), 
+                        and then iterate, in a O(ns) fashion where n is the number of files and s is the size, in bits, of the largest file on the storage system, to compare bit by bit! 
+                            -This becomes slow, and will not scale well either as the number of files uploaded increases! 
+
+                        Fixes: 
+                            -Use the Karp Rabin algorithm: compute a sliding hash for each file on the system, and compare hashes instead to the hash of the file being uploaded: now we can achieve a O(n) search algorithm
+                                -Recall, there are still some issues: 
+                                    -there can still be collisions though, so when hashes are equal, then and only then do we compare the files bit by bit 
+                                    -Also, still have to compare with N already stored files, 
+                                    -the new file has to be uploaded first
+                                    -Still have to search through N files
+                                -As a fix to these downsides:
+                                    -Collisions and having to upload the file first: 
+                                        -Choose different hash functions, compute hashes for each file, if there is a file with all the same hashes, files are probably equal, dont upload the new file in this case 
+                                            -compute hashes locally before uploading, so we dont need to upload the file first, we first just send the hash over to the server
+                                            -Collisions may still occur though! 
+                                                -This approach is still done in practice though (combined with Karp Rabin since we still only compare the hashes), because 
+                                                   a collision for even 1 hash function is extremely rare, and as you increase the number of hash functions, you will not see a 
+                                                collision in probably a lifetime: so then we do not need to really do that extra bit by bit check when the set of all hashes are 
+                                                equal between the current file and new file
+                                    -Having to search through N files: 
+                                        -Use precomputed hashes
+                                            -When a file is submitted, store its hash set values along with its address in memory inside a hash table 
+                                                -Now, when we submit a new file, we can instantly check if the hash set of the new file equals the hash set of 
+                                                an entry in this table, and if it does, just link the user to the address stored here rather than uploading the entire file! 
+                                                    -Avoid having to search through every file in the memory
+
+                        Final solution: 
+                            -Choose 3 - 5 hash functions to significantly reduce chance of collision 
+                            -Store file addresses and hash set in hash table
+                            -Compute the hashes of new file locally before upload, and send this to server first 
+                            -Search new file in the hash table, 
+                                -If search succeeds, (hash sets are equal) we link user to the address stored in the entry
+                                    Dont upload the file: this will potentially allow for instant upload times, and prevent duplicate files, which uses memory more efficiently
+
+                            Now we have a way to insert new files in O(1) and search for them in O(1) time, but now, memory usage for the map will be a major concern...
+
+                        More problems: 
+                            -Billions of file uploaded daily
+                            -Trillions stored already 
+                                -Too big for single hash table on 1 machine 
+                                -Too many requests for 1 hash table too 
+
+                            BIG DATA PROBLEM
+                                -Need to store trillions or more objects, file addreeses, user profiles, emails, need fast search / access
+                                    -Hash tables give us fast search and access, but quickly require a ton of memory 
+
+                                    The Fix: Use distributed hash table 
+                                        -Get 1000 computers, create hash table on each, seperate the data between these different hash tables, now we must 
+                                        determine which computer or hast table owns object O: can use a hash function h(O) % 1000, gives the number of the 
+                                        computer to which that object belongs, send request to that computer which then searches/uses its local hash table 
+
+                                        Main problems with this: 
+                                            -Computers may break, which can lead to data use
+                                                -FIX: have to store several copies of the data, relocate data from broken computer (data redundancy)
+                                            -Scaling the system: As service grows, new computers will need to be added to the cluster, meaning our old hash function for say 1000 
+                                            computers is no longer valid, this would require us to make a new hash function and rehash all items back into the hash tables: this can be very slow! Its linear 
+                                                -FIX: Consistent hashing, choose function h with cardinality m and put numbers from 0 to m-1 on a circle clockwise, each object O is then mapped to a point on the 
+                                                circle with number h(O), and computer IDs are mapped to this same circle, allowing us to assign objects O to each computer
+                                                    -Each object is stored on the closest computer on the circle, each computer stores all objects falling on some arc on the circle 
+                                                        -When a computer goes off, neighbors take on its data 
+                                                        -When a new computer is added, it takes a part of the arc of data managed by 1 computer
+                                                        
+                                                        -Since the circle size stays the same, we do not need to change our hash functions and rehash things
+
+                                            -Need to copy/relocate data, how will a node know where to send data? Need a network for this. Shouldnt have to store the addresses of all computers on each computer because
+                                            this quickly hogs memory and makes searching for the correct device slower than it needs to be
+                                                FIX: each node will know a few neightbors: store network addresses for some of its neighbors, and for each key, 
+                                                each node will the store it or know some node closer to this key (closer in terms of the hash circle)
+                                                    -Each node will only need to store O(log(n)) node addresses, better than storing O(n): for copying and relocating data then, its O(log(n)) worst case, where n is the 
+                                                    number of nodes / computers to check through in the neighbor list
+
+                                                    -This is called Overlay Network: it is used to address the issue of having to copy/relocate data when a new computer appears or when a computer goes offline
+                                                
+
             - [Distributed Hash Tables (video)](https://www.coursera.org/lecture/data-structures/distributed-hash-tables-tvH8H)
 
     - [ ] Implement with array using linear probing
