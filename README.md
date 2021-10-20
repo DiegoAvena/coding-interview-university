@@ -812,18 +812,42 @@ if you can identify the runtime complexity of different algorithms. It's a super
 ## More Knowledge
 
 - ### Binary search
-    - [ ] [Binary Search (video)](https://www.youtube.com/watch?v=D5SrAga1pno)
-    - [ ] [Binary Search (video)](https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/binary-search)
-    - [ ] [detail](https://www.topcoder.com/community/competitive-programming/tutorials/binary-search/)
-    - [ ] Implement:
+    - [X] [Binary Search (video)](https://www.youtube.com/watch?v=D5SrAga1pno)
+            -This video gets into binary search trees, which insure values are sorted and allowed us to search in O(log(n)), assuming the tree is balanced
+            -Binary search is a search algorithm we can perform on arrays that allows us to search for something in O(loh(n)) time, because each
+            iteration results in us halving the contents we need to search for. It works by comparing a mid point in the current interval (which is 
+            defined by a left and right pointer) to the value we are searching for, and if it is less, we cut off the right side of the current interval 
+            by setting right to mid - 1,but if it is larger, we cut off the left side by setting left to mid + 1, and then repeat the search in this 
+            new interval
+                -It can only be done for sorted arrays though! 
+    - [X] [Binary Search (video)](https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/binary-search)
+    - [X] [detail](https://www.topcoder.com/community/competitive-programming/tutorials/binary-search/)
+    - [X] Implement:
         - binary search (on sorted array of integers)
         - binary search using recursion
 
 - ### Bitwise operations
     - [ ] [Bits cheat sheet](https://github.com/jwasham/coding-interview-university/blob/main/extras/cheat%20sheets/bits-cheat-sheet.pdf) - you should know many of the powers of 2 from (2^1 to 2^16 and 2^32)
     - [ ] Get a really good understanding of manipulating bits with: &, |, ^, ~, >>, <<
-        - [ ] [words](https://en.wikipedia.org/wiki/Word_(computer_architecture))
-        - [ ] Good intro:
+        - [X] [words](https://en.wikipedia.org/wiki/Word_(computer_architecture))
+                -A word is the unit size of data a processor can handle at a time in a given computer architecture. It is used to define the size of an int, the size of memory addresses along 
+                with how many possible memory addresses there can be, register size, etc. This word size determines the width of the data bus or even the address bus: if the word is 32 bits, then the data bus has 32 paths in it, 1 
+                for each of the 32 bits, connected to main memory 
+                    -So then, since word size affects the bus width, then the size of a word affects how much data can be transfered to the CPU and it also may affect how many different addresses the CPU can fetch data from 
+                    -A larger word size makes the data bus larger, which means that more data can be transfered at a time to the CPU, which should make computers with larger word sizes faster than those with smaller word 
+                    sizes
+
+                -Why is having a standardized unit size of data important? 
+                    -It allows us to do things such as word addressing ram, which allows for efficient search (O(1)) of instructions from RAM by the processor, making the computer more responsive 
+                        -If we did not have a standardized size for addressing, then doing this random access would probably be impossible
+                    -Without a word, communication between the CPU and ram would be challenging, because the CPU needs to be able to get data from the RAM in such a way that it can be sure it will all fit in each of its 
+                    registers (RECALL: registers are little memory slots on the CPU itself where current values being operated on get stored)
+
+                -Modern computers today have support for 64 bit word sizes, while also still having support for smaller word sizes that are multiples of this, like 32 bits: from a market standpoint, this is important for 
+                backwards compatibility with a ton of software that has already been compiled for 32 bit architectures (this software may be recompiled for 64 bit, but it will take a lot of time, and time cost money, not to
+                mention that perhaps there might be issues that arise with building for a new architecture?)
+
+        - [X] Good intro:
             [Bit Manipulation (video)](https://www.youtube.com/watch?v=7jkIUgLC29I)
         - [ ] [C Programming Tutorial 2-10: Bitwise Operators (video)](https://www.youtube.com/watch?v=d0AwjSpNXR0)
         - [ ] [Bit Manipulation](https://en.wikipedia.org/wiki/Bit_manipulation)
