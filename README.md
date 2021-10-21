@@ -827,6 +827,15 @@ if you can identify the runtime complexity of different algorithms. It's a super
         - binary search using recursion
 
 - ### Bitwise operations
+
+    -Why is bit manipulation important? 
+        -In some cases, it can reduce the need to loop over a data structure or even get rid of the need to have a data structure that grows linearly; both of these 
+        things can allow programs to run faster and make more efficient use of memory, both of which are crucial in embedded systems that already have limited resources.
+
+        -Bit wise operations like left shift, right shift, etc, are usually way faster than operations like division, multiplacation, addition: again, this may make for a faster program. Also, 
+        bitwise operations consume less power due to their more simple nature, where as operations like division, addition, etc take way more power due to all the gates they need to function properly 
+        at the hardware level: this is something to take careful consideration of when working on embedded systems as well
+
     - [ ] [Bits cheat sheet](https://github.com/jwasham/coding-interview-university/blob/main/extras/cheat%20sheets/bits-cheat-sheet.pdf) - you should know many of the powers of 2 from (2^1 to 2^16 and 2^32)
     - [ ] Get a really good understanding of manipulating bits with: &, |, ^, ~, >>, <<
         - [X] [words](https://en.wikipedia.org/wiki/Word_(computer_architecture))
@@ -849,25 +858,51 @@ if you can identify the runtime complexity of different algorithms. It's a super
 
         - [X] Good intro:
             [Bit Manipulation (video)](https://www.youtube.com/watch?v=7jkIUgLC29I)
-        - [ ] [C Programming Tutorial 2-10: Bitwise Operators (video)](https://www.youtube.com/watch?v=d0AwjSpNXR0)
-        - [ ] [Bit Manipulation](https://en.wikipedia.org/wiki/Bit_manipulation)
-        - [ ] [Bitwise Operation](https://en.wikipedia.org/wiki/Bitwise_operation)
-        - [ ] [Bithacks](https://graphics.stanford.edu/~seander/bithacks.html)
-        - [ ] [The Bit Twiddler](https://bits.stephan-brumme.com/)
-        - [ ] [The Bit Twiddler Interactive](https://bits.stephan-brumme.com/interactive.html)
-        - [ ] [Bit Hacks (video)](https://www.youtube.com/watch?v=ZusiKXcz_ac)
-		- [ ] [Practice Operations](https://pconrad.github.io/old_pconrad_cs16/topics/bitOps/)
-    - [ ] 2s and 1s complement
+        - [X] [C Programming Tutorial 2-10: Bitwise Operators (video)](https://www.youtube.com/watch?v=d0AwjSpNXR0)
+        - [X] [Bit Manipulation](https://en.wikipedia.org/wiki/Bit_manipulation)
+        - [X] [Bitwise Operation](https://en.wikipedia.org/wiki/Bitwise_operation)
+        - [X] [Bithacks](https://graphics.stanford.edu/~seander/bithacks.html)
+        - [X] [The Bit Twiddler](https://bits.stephan-brumme.com/)
+        - [X] [The Bit Twiddler Interactive](https://bits.stephan-brumme.com/interactive.html)
+        - [X] [Bit Hacks (video)](https://www.youtube.com/watch?v=ZusiKXcz_ac)
+		- [X] [Practice Operations](https://pconrad.github.io/old_pconrad_cs16/topics/bitOps/)
+    - [X] 2s and 1s complement
         - [Binary: Plusses & Minuses (Why We Use Two's Complement) (video)](https://www.youtube.com/watch?v=lKTsv6iVxV4)
         - [1s Complement](https://en.wikipedia.org/wiki/Ones%27_complement)
+            -Form the negative number by taking the positive number and inverting all its bits: the binary ~ operator! 
+            -Gets you almost to a system where the sign bit behaves normally with ordinary operations: we want this property, because 
+            it allows for the hardware to be much more simpler to create! 
+                -Because it treats the sign bit as a normal bit in the number, does not exclude it
+                -If while adding a pos number and -number, if you get a carry out, just bring that carry out back around to bit 0, and 
+                add it back in until no more carryouts occur 
+
+                Ex: 
+                    7      0111
+                 + (-3)    1100 (-3 in 1s compliment)
+                ________   0111 (carry out of 1, bring it back around to add it)
+                    4      
+                           0111 + 0001 = 0100: 4, as expected!
+
+            -Still has the problem with representing 0 though, because -0 gets mapped to 1111, we would like both -0 and 0 to be mapped to 0000, 
+            only want 1 representation of 0, otherwise the hardware will need to be more complex, along with the compiler cuz now you need to check 
+            for 0 and -0
+            -As seen in the example above, have to also make sure to bring carryouts back around and readd them into the number: it would be nice to not have to 
+            worry about 
         - [2s Complement](https://en.wikipedia.org/wiki/Two%27s_complement)
-    - [ ] Count set bits
+               -Equals 1's complement + 1
+               Ex) -3 is 1100 + 1 = 1101 = 1 + 4 - 7 = -3 
+
+               -This gets rid of the 2 zeros problem, along with the need to round carryouts back to the start of the num to add back in
+                - -0: 1111 + 1 -> 0000 !, yay! 
+                -Carryouts can just be thrown away: hardware can be designed as normal now! Dont need to make a distinguisment between neg and pos nums in hardware 
+                -Also creates an easy, simple rule for determining if overflow occured at the hardware level
+    - [X] Count set bits
         - [4 ways to count bits in a byte (video)](https://youtu.be/Hzuzo9NJrlc)
         - [Count Bits](https://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan)
         - [How To Count The Number Of Set Bits In a 32 Bit Integer](http://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer)
-    - [ ] Swap values:
+    - [X] Swap values:
         - [Swap](https://bits.stephan-brumme.com/swap.html)
-    - [ ] Absolute value:
+    - [X] Absolute value:
         - [Absolute Integer](https://bits.stephan-brumme.com/absInteger.html)
 
 ## Trees
